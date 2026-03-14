@@ -1,0 +1,74 @@
+/* Create a grid for the page */
+.thesis-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    /* Sidebar is 1/3, Body is 2/3 */
+    gap: 40px;
+}
+
+/* 1. The Box Itself (Controls position and alignment) */
+.sidebar-title {
+    position: sticky;
+    top: 40px;
+    font-family: sans-serif;
+    text-align: justify;
+    /* We removed the red color and uppercase from here! */
+}
+
+/* The Titles (Forces your # and ## headers to be red and uppercase) */
+.sidebar-title h1,
+.sidebar-title h2 {
+    color: #c00000;
+    text-transform: uppercase;
+}
+
+/* The Normal Text (Ensures paragraphs stay normal and black) */
+.sidebar-title p {
+    color: #000000;
+    text-transform: none;
+    text-align: justify;
+}
+
+/* 2. Main text flows straight down */
+.main-content {
+    column-count: 1;
+    /* Forces a single, scrolling vertical column */
+    text-align: justify;
+}
+
+/* 3.Videos stacked vertically */
+.video-container {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    /* Adds a nice gap below each video */
+    break-inside: avoid;
+    /* Prevents the video from jumping to a new column */
+    page-break-inside: avoid;
+}
+
+video {
+    border: 1px solid #ddd;
+    /* Adds a light border around the video */
+    border-radius: 8px;
+    /* Rounds the corners slightly */
+}
+
+/* Four-column layout for the bottom section */
+.four-column-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Creates 4 equal columns */
+    gap: 20px;
+    /* Space between the 4 columns */
+    margin-top: 60px;
+    /* Adds breathing room below the main thesis text */
+    font-size: 0.85em;
+    /* Optional: Makes the text slightly smaller like your image */
+}
+
+/* Optional styling for the items inside the columns */
+.grid-item {
+    text-align: justify;
+}

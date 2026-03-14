@@ -1,0 +1,28 @@
+project:
+  type: book
+
+book:
+  title: "tesis-filo"
+  author: "Jaime Vergara Sanfuentes"
+  date: "03-05-2025"
+  chapters:
+    - index.qmd
+    - chap_2_test.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: sandstone
+    toc: true
+    number-sections: true
+    highlight-style: pygments
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+
+
+

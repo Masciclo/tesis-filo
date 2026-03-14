@@ -1,0 +1,227 @@
+---
+title: "The modern inmensity of the urban"
+format: 
+  html:
+    css: styles.css
+    page-layout: full
+---
+
+::::: {.thesis-container}
+
+::: {.sidebar-title}
+# The modern inmensity of the urban
+
+In pre-modern times, we had a relationship with the urban environment that could be addressed, if not manipulated, through locomotion. Wandering was a sufficient mode of transport to experience and intuitively assimilate the urban tissue. The size of the city could be classified, using Freundschuh and Egenhofer’s spaces, as an environmental scale, where the designer could become subject to the different perceptual cues of the city over time
+
+As cities grew larger, their scale began to represent not just a practical complication of transport, but an ontological withdrawal of the urban phenomenon and an epistemological shift toward more abstract ways of conceiving the city. The technological development of transport—cars, trains, and planes— allowed us to transformed the experience of citizens into a discontinuous transit between environments. Although this technological development allowed us to handle and tailor our own individual urban environments within the city, we lost an general aspect of the urban. The passage to a geographic scale meant that we were cognitively surpassed by the urban information (Stolk & Portugali, 2016).
+
+Across the spam of two centuries this change in magnitude widrew the experience of the city from our sensibilities as we knew it. It transformed it into a metropolis, assembled in megalopolis and nested finaly in a ecumenopolis: The phenomena of the urban enviromented enters now partialy in our lifes, closer to climate and other worldly events, it has become psicolgicably increasingly inaccesible in its totality by pure sensible intuition, and the design medium trougth wich we concive them have turn virtual domains. 
+What was lost during transformation? How do we did built the modern city if not trougth intuition? Who were technological "winners" and the "loser" of this revolution? Why intuition cannot be convey througt modern design medium?? How could we trace a genalogy of intuitive design mediums?
+:::
+
+:::: {.main-content}
+
+<br><br><br><br><br>
+
+***
+
+*figura 1. BULP Ubicaciones de propiedades edificadas [^1]*
+
+::: {.video-container}
+```{=html}
+<video width="100%" autoplay loop muted playsinline controls>
+  <source src="figures/BUPL.mp4" type="video/mp4">
+</video>
+```
+:::
+
+*figure 2. Variación de ubicaciones de propiedades edificadas[^2]*
+
+::: {.video-container}
+```{=html}
+<video width="700" autoplay loop muted playsinline controls>
+  <source src="figures/BUPL_VARIATION.mp4" type="video/mp4">
+</video>
+```
+
+```{python}
+#| echo: false
+#| fig-cap: "Evolución de la población por ciudad (Top 5 destacadas)"
+
+import pandas as pd
+import plotly.express as px
+
+# 1) Lee el CSV
+df = pd.read_csv(
+    "data/WUP2018-F11b-30_Largest_Cities_in_2018_by_time_delimitado.csv",
+    sep=";", engine="python", decimal=","
+)
+
+# 2) Filtra y calcula tasas de crecimiento
+years_20 = [1950, 1970, 1990, 2010, 2030]
+pivot = (
+    df[df['Year'].isin(years_20)]
+    .pivot_table(index='Urban Agglomeration', columns='Year',
+                 values='Population (millions)')
+    .reset_index()
+)
+pivot['1950-1970'] = (pivot[1970] - pivot[1950]) / pivot[1950]
+pivot['1970-1990'] = (pivot[1990] - pivot[1970]) / pivot[1970]
+pivot['1990-2010'] = (pivot[2010] - pivot[1990]) / pivot[1990]
+pivot['2010-2030'] = (pivot[2030] - pivot[2010]) / pivot[2010]
+
+growth = pivot.assign(**{
+    'Mean Growth Rate': pivot[['1950-1970','1970-1990','1990-2010','2010-2030']].mean(axis=1)
+}).sort_values('Mean Growth Rate', ascending=False)
+
+# 3) Top 5 y resto como 'Otras'
+top5 = growth['Urban Agglomeration'].head(5).tolist()
+df['color_group'] = df['Urban Agglomeration'].apply(
+    lambda c: c if c in top5 else 'Otras'
+)
+
+# 4) Crear figura inyectando Urban Agglomeration en custom_data
+fig = px.line(
+    df,
+    x='Year',
+    y='Population (millions)',
+    color='color_group',
+    line_group='Urban Agglomeration',
+    custom_data=['Urban Agglomeration'],
+    hover_data={                      # ocultamos todo lo automático
+        'color_group': False,
+        'Year': False,
+        'Population (millions)': False,
+        'Urban Agglomeration': False
+    },
+    labels={
+        'Year': 'Año',
+        'Population (millions)': 'Población (millones)'
+    },
+)
+
+# 5) Tooltip personalizado usando customdata[0]
+fig.update_traces(
+    hovertemplate=
+        "Ciudad : %{customdata[0]}<br>" +
+        "Año : %{x}<br>" +
+        "Población (millones) : %{y:.0f}<br>" +
+        "<extra></extra>"
+)
+
+# 6) Estilos de fondo blanco
+fig.update_layout(
+    paper_bgcolor="white",
+    plot_bgcolor="white"
+)
+
+# 7) Líneas ‘Otras’ en gris claro y top5 más gruesas
+for trace in fig.data:
+    if trace.name == "Otras":
+        trace.update(line=dict(color="lightgrey", width=1))
+    else:
+        trace.update(line=dict(width=2))
+
+# 8) Mostrar figura
+fig
+```
+*figura 2. Evolución de la población de las 30 algormeraciónes más grandes (Destacadas las 5 algomeraciones con mayor taza de crecimiento promedio)[^2]*
+
+```{python}
+#| echo: false
+import geopandas as gpd
+import pandas as pd
+import plotly.express as px
+import numpy as np
+
+# 1) Load & subset your GeoDataFrame
+gdf = gpd.read_file(
+    "data/merged_urban_natural_earth.geojson"
+
+)
+year_columns = ['1950', '1970', '1990', '2010', '2025']
+gdf_filtered = gdf[['Country', 'ISO_A3'] + year_columns].copy()
+
+# 2) Clean & convert comma→dot floats if needed
+for yr in year_columns:
+    gdf_filtered[yr] = (
+        gdf_filtered[yr]
+        .astype(str)
+        .str.replace(',', '.', regex=False)
+        .pipe(pd.to_numeric, errors='coerce')
+    )
+
+# 3) Melt to long form
+df_long = gdf_filtered.melt(
+    id_vars=['ISO_A3', 'Country'],
+    value_vars=year_columns,
+    var_name='Year',
+    value_name='Percent'
+)
+
+# 4) Build the choropleth with slider
+fig = px.choropleth(
+    df_long,
+    locations='ISO_A3',          # ISO-3 codes for mapping
+    color='Percent',             # percent values
+    locationmode='ISO-3',
+    animation_frame='Year',      # slider over Year
+    range_color=(0, 100),      # fixed color range
+    color_continuous_scale='Portland_r',
+    scope='world',
+    hover_name='Country',        # show full country name on hover
+    hover_data={'Percent': ':.2f'},  # two-decimal percentage
+)
+
+# 5) Hide the colorbar/legend and tidy layout
+fig.update_traces(showscale=False)
+fig.update_layout(
+    geo=dict(
+        showframe=False,     # quita el marco del mapa
+        scope='world',
+        showcoastlines=False, # quita las líneas costeras
+        showcountries=False,  # quita bordes entre países
+        bgcolor="white",      # fondo blanco
+        landcolor="white",    # color del continente
+    ),
+    paper_bgcolor="white",     # fondo blanco general
+    plot_bgcolor="white",
+    margin=dict(l=0, r=0, t=30, b=0),
+)
+
+fig
+```
+
+:::
+
+::::
+
+:::::
+
+:::: {.four-column-container}
+
+::: {.grid-item}
+**Column 1 Header**
+Insert the text or images for your first column here.
+:::
+
+::: {.grid-item}
+**Column 2 Header**
+Insert the text or images for your second column here.
+:::
+
+::: {.grid-item}
+**Column 3 Header**
+Insert the text or images for your third column here.
+:::
+
+::: {.grid-item}
+**Column 4 Header**
+Insert the text or images for your fourth column here.
+:::
+
+::::
+
+
+[^1]: Uhl, Johannes H.: Animating 200 years of urban spatial development in 35 U.S. cities. Copernicus Publications, 2020. https://doi.org/10.5446/48115
+[^2]: Idem.

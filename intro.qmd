@@ -1,0 +1,211 @@
+---
+title: "Introducción: La crisis del urbanismo como una ciencia a ciegas"
+jupyter: python3
+---
+
+
+![](figures/ia_la maison_domino.png){fig-cap="La maison Domino, Le Corbusier 1914–1915"}
+*figura 1. La maison Domino, Le Corbusier 1914-1915[^1]*
+
+<div style="text-align: justify;">
+*Frente a la devastación de la guerra, le Corbusier pasa los primeros años de esta depurando lo que sería su solución para un mundo después de la devastación; el sistema domino. En él se presenta, la reducción de lo que él piensa, es la nueva arquitectura. Destripado de todo lo que no sea esencial, la estructura domino presenta un diseño arquitectónico, en el cual las plantas han quedado liberadas de sus muros de carga, dejando un espacio ininterumpido para el diseño de interior. Los esquemas estructurales de la casa de le Corbusier, plantean ya en 1914, una separación e independencia topológica, de los planos y los elementos de la arquitectura. Concibiendo un nuevo diseño de espacio habitacional; modular y replicable, apilable y secuenciable, rompe así con los impedimentos de la escala; liberando el interior de su tamaño, y marcando hasta el día de hoy, en hierro y concreto, el inicio de una nueva arquitectura en lo inmenso.*
+
+En un breve ensayo escrito en 1994 sobre la deriva del urbanismo el arquitecto holandés Rem Koolhass, concluye la extinción de la práctica exitosa del urbanismo. El siglo XX sería la crónica de “una batalla perdida en el tema de la cantidad.” Con un discurso más bien directo, no repara en duras acusaciones y comentarios contra las profesiones implicadas en esta debacle disciplinar.
+
+La arquitectura y el urbanismo los “profesionales de la ciudad”, “las dos profesiones anteriormente más implicadas en la creación de ciudades”, son descritos como “jugadores de ajedrez que pierden frente a los ordenadores.”  Los culpables de una “cadena de acciones y posturas escapistas de retirada”.  Los responsables de legar el “fiasco” de un “enorme cráter en nuestro entendimiento de la modernidad y la modernización.”, una “vergüenza colectiva”.
+
+Severo y lapidario para Koolhaas el fracaso estaría en cómo estas dos disciplinas arquitectura y el urbanismo enfrentaron o no enfrentaron la enorme explosion demográfica de las ciudades por el éxodo rural y los avances científicos en la natalidad. Quizás si se le entrevistarse nuevamente al arquitecto Holandez mostrando las cifras con las que contamos actualmente tal vez su espanto sería aún mayor aún.
+A lo largo del siglo XX, fuimos testigos de varias oleadas migratorias del campo a la ciudad. Primero se aceleró la urbanización en el “Global North” y, ya en la segunda mitad de ese siglo, se produjo un crecimiento urbano tardío pero muy intenso en el “Global South”. Aunque cada ola migratoria parece haber concluido, la magnitud del fenómeno no ha dejado de crecer: hoy podemos observar cómo la imparable expansión de las ciudades sigue reflejando la globalización de este proceso demográfico (United Nations, Department of Economic and Social Affairs, Population Division, 2018).
+
+Cientos de urbes pasados las decenas de millones de habitantes, y sólo durante los últimos 30 años podemos observar que las grandes ciudades del mundo ha superado los 10 millones de habitantes, con cuatro ciudades ya superando los 30 millones de habitantes, Delhi llegando según las proyección a los 43 millones en 2035.
+
+</div>
+
+```{python}
+#| echo: false
+#| fig-cap: "Evolución de la población por ciudad (Top 5 destacadas)"
+
+import pandas as pd
+import plotly.express as px
+
+# 1) Lee el CSV
+df = pd.read_csv(
+    "data/WUP2018-F11b-30_Largest_Cities_in_2018_by_time_delimitado.csv",
+    sep=";", engine="python", decimal=","
+)
+
+# 2) Filtra y calcula tasas de crecimiento
+years_20 = [1950, 1970, 1990, 2010, 2030]
+pivot = (
+    df[df['Year'].isin(years_20)]
+    .pivot_table(index='Urban Agglomeration', columns='Year',
+                 values='Population (millions)')
+    .reset_index()
+)
+pivot['1950-1970'] = (pivot[1970] - pivot[1950]) / pivot[1950]
+pivot['1970-1990'] = (pivot[1990] - pivot[1970]) / pivot[1970]
+pivot['1990-2010'] = (pivot[2010] - pivot[1990]) / pivot[1990]
+pivot['2010-2030'] = (pivot[2030] - pivot[2010]) / pivot[2010]
+
+growth = pivot.assign(**{
+    'Mean Growth Rate': pivot[['1950-1970','1970-1990','1990-2010','2010-2030']].mean(axis=1)
+}).sort_values('Mean Growth Rate', ascending=False)
+
+# 3) Top 5 y resto como 'Otras'
+top5 = growth['Urban Agglomeration'].head(5).tolist()
+df['color_group'] = df['Urban Agglomeration'].apply(
+    lambda c: c if c in top5 else 'Otras'
+)
+
+# 4) Crear figura inyectando Urban Agglomeration en custom_data
+fig = px.line(
+    df,
+    x='Year',
+    y='Population (millions)',
+    color='color_group',
+    line_group='Urban Agglomeration',
+    custom_data=['Urban Agglomeration'],
+    hover_data={                      # ocultamos todo lo automático
+        'color_group': False,
+        'Year': False,
+        'Population (millions)': False,
+        'Urban Agglomeration': False
+    },
+    labels={
+        'Year': 'Año',
+        'Population (millions)': 'Población (millones)'
+    },
+)
+
+# 5) Tooltip personalizado usando customdata[0]
+fig.update_traces(
+    hovertemplate=
+        "Ciudad : %{customdata[0]}<br>" +
+        "Año : %{x}<br>" +
+        "Población (millones) : %{y:.0f}<br>" +
+        "<extra></extra>"
+)
+
+# 6) Estilos de fondo blanco
+fig.update_layout(
+    paper_bgcolor="white",
+    plot_bgcolor="white"
+)
+
+# 7) Líneas ‘Otras’ en gris claro y top5 más gruesas
+for trace in fig.data:
+    if trace.name == "Otras":
+        trace.update(line=dict(color="lightgrey", width=1))
+    else:
+        trace.update(line=dict(width=2))
+
+# 8) Mostrar figura
+fig
+```
+
+*figura 2. Evolución de la población de las 30 algormeraciónes más grandes (Destacadas las 5 algomeraciones con mayor taza de crecimiento promedio)[^2]*
+
+```{python}
+#| echo: false
+import geopandas as gpd
+import pandas as pd
+import plotly.express as px
+import numpy as np
+
+# 1) Load & subset your GeoDataFrame
+gdf = gpd.read_file(
+    "data/merged_urban_natural_earth.geojson"
+
+)
+year_columns = ['1950', '1970', '1990', '2010', '2025']
+gdf_filtered = gdf[['Country', 'ISO_A3'] + year_columns].copy()
+
+# 2) Clean & convert comma→dot floats if needed
+for yr in year_columns:
+    gdf_filtered[yr] = (
+        gdf_filtered[yr]
+        .astype(str)
+        .str.replace(',', '.', regex=False)
+        .pipe(pd.to_numeric, errors='coerce')
+    )
+
+# 3) Melt to long form
+df_long = gdf_filtered.melt(
+    id_vars=['ISO_A3', 'Country'],
+    value_vars=year_columns,
+    var_name='Year',
+    value_name='Percent'
+)
+
+# 4) Build the choropleth with slider
+fig = px.choropleth(
+    df_long,
+    locations='ISO_A3',          # ISO-3 codes for mapping
+    color='Percent',             # percent values
+    locationmode='ISO-3',
+    animation_frame='Year',      # slider over Year
+    range_color=(0, 100),      # fixed color range
+    color_continuous_scale='Portland_r',
+    scope='world',
+    hover_name='Country',        # show full country name on hover
+    hover_data={'Percent': ':.2f'},  # two-decimal percentage
+)
+
+# 5) Hide the colorbar/legend and tidy layout
+fig.update_traces(showscale=False)
+fig.update_layout(
+    geo=dict(
+        showframe=False,     # quita el marco del mapa
+        scope='world',
+        showcoastlines=False, # quita las líneas costeras
+        showcountries=False,  # quita bordes entre países
+        bgcolor="white",      # fondo blanco
+        landcolor="white",    # color del continente
+    ),
+    paper_bgcolor="white",     # fondo blanco general
+    plot_bgcolor="white",
+    margin=dict(l=0, r=0, t=30, b=0),
+)
+
+fig
+```
+
+*figura 3. Porcentage de poblacion urbana en ciudad entre 1950 y 2025[^3]*
+
+::: {.video-container}
+<video width="700" autoplay loop muted playsinline controls>
+  <source src="figures/BUPL_VARIATION.mp4" type="video/mp4">
+</video>
+:::
+
+*figura 1. BULP Ubicaciones de propiedades edificadas [^4]*
+
+<br><br>
+
+::: {.video-container}
+<video width="700" autoplay loop muted playsinline controls>
+  <source src="figures/BUPL.mp4" type="video/mp4">
+</video>
+:::
+
+*figura 2. Variación de ubicaciones de propiedades edificadas[^5]*
+
+<br><br>
+
+::: {.video-container}
+<video id="mortality-video" width="700" autoplay loop muted playsinline controls>
+  <source src="figures/Child_Mortality_Rate.mp4" type="video/mp4">
+</video>
+
+:::
+
+<br><br>
+
+<!-- ✅ Video de mortalidad -->
+
+
+[^1]: Le Corbusier 1914-1915.  
+[^2]: United Nations, Department of Economic and Social Affairs, Population Division (2018). *World Urbanization Prospects: The 2018 Revision, Online Edition*.  
+[^3]: Idem.
+[^4]: Uhl, Johannes H.: Animating 200 years of urban spatial development in 35 U.S. cities. Copernicus Publications, 2020. https://doi.org/10.5446/48115
+[^5]: Idem.

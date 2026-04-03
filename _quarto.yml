@@ -8,8 +8,12 @@ book:
   date: "03-05-2025"
   chapters:
     - index.qmd
-    - chap_2_test.qmd
-    - summary.qmd
+    - chap_1.qmd
+    - chap_2.qmd
+    - chap_3.qmd
+    - chap_4.qmd
+    - chap_5.qmd
+    - chap_6.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -17,13 +21,13 @@ bibliography: references.bib
 format:
   html:
     theme: sandstone
-    toc: true
-    number-sections: true
     highlight-style: pygments
+    sidebar: false
+    number-sections: false
   pdf:
     documentclass: scrreprt
-    toc: true
-    number-sections: true
+    number-sections: false
+
 
 
 

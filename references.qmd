@@ -1,4 +1,93 @@
-# References {.unnumbered}
+---
+title: "References & Bibliography"
+format: 
+  html:
+    css: styles.css
+    page-layout: custom
+    title-block-style: none
+---
 
-::: {#refs}
+::::: {.cover-container}
+
+<!-- DOCUMENT TITLE -->
+::: {.thesis-title style="text-align: left; margin-bottom: 1.5rem;"}
+<h1 style="font-size: 2.5em;"><span class="header-section-number" style="font-size: 1em;">/REF</span> References</h1>
+:::
+
+<!-- FULL-WIDTH IMAGE -->
+<img src="figures/backcover_fig_1_the_city_of_the_captive_world.png" style="width: 100%; max-height: 60vh; object-fit: contain; border-radius: 4px; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);">
+<p style="font-style: italic; color: #666; margin-top: 1rem; margin-bottom: 3rem;">The City of the Captive Globe</p>
+
+<!-- CITATIONS IN COLUMNS -->
+:::: {.columns style="text-align: left;"}
+
+::: {.column width="48%"}
+### Text Citations
+- Portugali, J. (2016). What Makes Cities Complex? In J. Portugali & E. Stolk (Eds.), *Complexity, Cognition, Urban Planning and Design* (pp. 3–19). Springer International Publishing.
+- Stolk, E., & Portugali, J. (2016). A Complexity-Cognitive View on Scale in Urban Design. In J. Portugali & E. Stolk (Eds.), *Complexity, Cognition, Urban Planning and Design* (pp. 217–252). Springer International Publishing.
+- Kant, I. (1998). *Critique of pure reason* (P. Guyer & A. W. Wood, Trans.). Cambridge University Press. (Original work published 1781)
+- Fondation Gabriel Péri. (2022, April 21). *Éric Puisais, Henri Lefebvre, une philosophie de la géographie* [Video]. YouTube.
+- Koolhaas, R. (1995). Bigness, or the Problem of Large. In R. Koolhaas & B. Mau (Eds.), *S,M,L,XL* (pp. 495–516). The Monacelli Press.
+- Lefebvre, H. (1972). *Urbanose: Entretien avec Henri Lefebvre* [Documentary]. Office National du Film du Canada.
+- De Roo, G. (2016). Framing the Planning Game: A Cognitive Understanding of the Planner’s Rationale in a Differentiated World. In J. Portugali & E. Stolk (Eds.), *Complexity, Cognition, Urban Planning and Design* (pp. 173–199). Springer International Publishing.
+- Kousoulas, S., & Radman, A. (2026). Annotate This! Semiotisation, Automation and the Recursive Causality of Images. In A. Biglari (Ed.), *Open Semiotics* (Vol. 5).
+- Koolhaas, R. (2002). Junkspace. *October*, 100, 175–190.
+- von Uexküll, J. (1957). A stroll through the worlds of animals and men: A picture book of invisible worlds (C. H. Schiller, Trans.). In C. H. Schiller (Ed.), *Instinctive behavior: The development of a modern concept* (pp. 5–80). International Universities Press. (Original work published 1934)
+- Aristotle. (1984). *Metaphysics* (W. D. Ross, Trans.). In J. Barnes (Ed.), *The complete works of Aristotle: The revised Oxford translation* (Vol. 2, pp. 1552–1728). Princeton University Press. (Original work published ca. 350 B.C.E.)
+- Heidegger, M. (1977). The age of the world picture. In W. Lovitt (Trans.), *The question concerning technology and other essays* (pp. 115–154). Harper & Row. (Original work published 1950)
+- Simondon, G. (2017). *On the mode of existence of technical objects* (C. Malaspina & J. Rogove, Trans.). Univocal Publishing. (Original work published 1958)
+- Sloterdijk, P. (2016). *Foams: Spheres volume III: Plural spherology* (W. Hoban, Trans.). Semiotext(e). (Original work published 2004).
+- Le Corbusier. (1923). *Vers une architecture*. G. Crès et Cie.
+- Fabian Alvarado David. (2016, 7 juillet). *Le mouvement dans les sociétés hypermodernes François Ascher* [Vidéo]. YouTube.
+- Capurro, R. (2003). *Angeletics - A message theory*. Rafael Capurro.
+- Coccia, E. (2021). *Filosofia della casa: Lo spazio domestico e la felicità*. Einaudi.
+:::
+
+::: {.column width="4%"}
+<!-- Spacer -->
+:::
+
+::: {.column width="48%"}
+### Image Citations
+- Uhl, Johannes H.: Animating 200 years of urban spatial development in 35 U.S. cities. Copernicus Publications, 2020.
+- United Nations, Department of Economic and Social Affairs, Population Division. (2019). *World urbanization prospects*
+- Zhu, X. X., Chen, S., Zhang, F., Shi, Y., and Wang, Y.: GlobalBuildingAtlas: an open global and complete dataset of building polygons, heights and LoD1 3D models, Earth Syst. Sci. Data, 17, 6647–6668, 2025.
+- von Uexküll, J. (1957). A stroll through the worlds of animals and men: A picture book of invisible worlds. In C. H. Schiller (Ed. & Trans.), *Instinctive behavior: The development of a modern concept* (pp. 5–80). International Universities Press. (Original work published 1934)
+- *Blind men and the elephant* [Illustration]. (1907). In *The Heath readers by grades* (p. 69). D.C. Heath and Company.
+- Stolk, E., & Portugali, J. (2016). A Complexity-Cognitive View on Scale in Urban Design. In J. Portugali & E. Stolk (Eds.), *Complexity, Cognition, Urban Planning and Design* (pp. 217–252). Springer International Publishing.
+- Eisen, C. (1755). *Frontispiece* [Engraving]. In M.-A. Laugier, *Essai sur l'architecture* (2nd ed.). Duchesne.
+- Le Corbusier. (1914). *Maison Dom-Ino, elevation/perspective view* [Architectural Drawing]. Fondation Le Corbusier, Paris, France.
+- Levittown library. (1950). Early Capes Aerial View of Levittown.
+- SITE (1981), *Highrise of houses*.
+- Sharpsteen, B. (Director). (1938). *Mickey's trailer* [Film]. Walt Disney Productions.
+- Ed Ruscha (1966), *Standard Station*
+- Shuttle Nasa Topography Mission (SRTM) (1999)
+- Google Earth. (2018, December 7). *Google Earth Studio - Animation Reel* [Video]. YouTube.
+- Biljecki, F., Ledoux, H., & Stoter, J. (2016). An improved LOD specification for 3D building models. *Computers, Environment and Urban Systems*, 59, 25–37.
+- Rem Koolhaas & Madelon Vriesendorp, *The City of the Captive Globe*, New York, 1972. Gouache and pencil on paper, 318 × 441 mm. The Museum of Modern Art, New York.
+- NVIDIA. (2025, March 24). *NVIDIA Omniverse Foundational Technology Montage I GTC Spring 2025 Edition* [Video]. YouTube.
+- Currens Ventosa, Oostvoorne NL 1993, photo: Adriaan Kok
+- Ron Herron *Walking City on the Ocean*, project (Exterior perspective) 1966
+:::
+
+::::
+
+:::::
+
+<hr style="border:none; border-top: 1px solid #ddd; margin: 3rem 0;">
+
+::: {.index-footer-row style="justify-content: center; width: 100%;"}
+::: {.index-footer-right style="width: 100%; justify-content: center;"}
+<ul>
+  <li><a href="index.html">Index</a></li>
+  <li><a href="chap_1.html">Chapter 1</a></li>
+  <li><a href="chap_2.html">Chapter 2</a></li>
+  <li><a href="chap_3.html">Chapter 3</a></li>
+  <li><a href="chap_4.html">Chapter 4</a></li>
+  <li><a href="chap_5.html">Chapter 5</a></li>
+  <li><a href="chap_6.html">Chapter 6</a></li>
+  
+  <li><a href="references.html">References</a></li>
+</ul>
+:::
 :::

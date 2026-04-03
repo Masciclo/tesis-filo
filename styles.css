@@ -1,74 +1,348 @@
-/* Create a grid for the page */
+/* ==========================================================================
+   Global Styles Setup
+   ========================================================================== */
+/* Import Google Fonts for typography */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700");
+
+/* Base styling for document body and HTML elements */
+body,
+html {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    background-color: #F9F9F9;
+    /* Off-white background to reduce eye strain */
+}
+
+/* ==========================================================================
+   Main Layout System (CSS Grid)
+   ========================================================================== */
+/* 
+   Master Grid Wrapper 
+   Defines the main content area using CSS Grid.
+   Defaults to a vertically stacked, single-column layout for mobile devices.
+*/
 .thesis-container {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    /* Sidebar is 1/3, Body is 2/3 */
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "title"
+        "media"
+        "text";
+    /* Mobile: vertically stacked */
     gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    /* Center the layout horizontally */
+    padding: 40px;
 }
 
-/* 1. The Box Itself (Controls position and alignment) */
-.sidebar-title {
-    position: sticky;
-    top: 40px;
-    font-family: sans-serif;
-    text-align: justify;
-    /* We removed the red color and uppercase from here! */
+/* Document Title Area */
+.thesis-title {
+    grid-area: title;
 }
 
-/* The Titles (Forces your # and ## headers to be red and uppercase) */
-.sidebar-title h1,
-.sidebar-title h2 {
-    color: #c00000;
+.thesis-title h1 {
+    font-size: 4em;
     text-transform: uppercase;
+    color: #111;
+    margin-top: 0;
+    line-height: 1.5;
+    margin-bottom: 0;
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-/* The Normal Text (Ensures paragraphs stay normal and black) */
-.sidebar-title p {
-    color: #000000;
-    text-transform: none;
-    text-align: justify;
+.thesis-title h1 .header-section-number {
+    flex-shrink: 0;
+    font-size: 3.5em;
+    line-height: 1.5;
 }
 
-/* 2. Main text flows straight down */
-.main-content {
-    column-count: 1;
-    /* Forces a single, scrolling vertical column */
-    text-align: justify;
+/* 
+   Desktop Layout
+   Updates the grid to a 2-column layout on screens 900px or wider.
+*/
+@media (min-width: 900px) {
+
+    /* Make the title span the entire row, align left, with 75% width */
+    .thesis-title {
+        width: 90%;
+        margin-left: 0;
+    }
+
+    /* Default: Media on Left, Text on Right */
+    .thesis-container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "title title"
+            "media text";
+    }
+
+    /* Option: Text on Left, Media on Right (Add .text-left to .thesis-container) */
+    .thesis-container.text-left {
+        grid-template-areas:
+            "title title"
+            "text  media";
+    }
 }
 
-/* 3.Videos stacked vertically */
-.video-container {
-    display: block;
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 40px;
-    /* Adds a nice gap below each video */
-    break-inside: avoid;
-    /* Prevents the video from jumping to a new column */
-    page-break-inside: avoid;
-}
-
-video {
-    border: 1px solid #ddd;
-    /* Adds a light border around the video */
+/* ==========================================================================
+   Grid Columns Styling
+   ========================================================================== */
+/* 
+   Media Column (Images/Figures/Videos) 
+   Uses sticky positioning so visual content stays visible while scrolling text.
+*/
+.media-column {
+    grid-area: media;
+    height: max-content;
+    background-color: #f2f2f2;
+    padding: 20px;
     border-radius: 8px;
-    /* Rounds the corners slightly */
 }
 
-/* Four-column layout for the bottom section */
-.four-column-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    /* Creates 4 equal columns */
-    gap: 20px;
-    /* Space between the 4 columns */
-    margin-top: 60px;
-    /* Adds breathing room below the main thesis text */
-    font-size: 0.85em;
-    /* Optional: Makes the text slightly smaller like your image */
+/* Styling for media elements within the media column */
+.media-column img,
+.media-column video {
+    width: 100%;
+    border-radius: 8px;
+    /* Slightly rounded corners for a softer look */
+    margin-bottom: 2rem;
 }
 
-/* Optional styling for the items inside the columns */
-.grid-item {
+/* Styling for media column figure citations */
+.media-citation {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #555;
+    margin-top: -1.5rem;
+    /* Pull it slightly closer to the media above */
+    margin-bottom: 4rem;
+    /* Normal space before next media element */
+    text-align: center;
+}
+
+/* 
+   Text Column (Paragraphs) 
+   Styling for main textual content.
+*/
+.text-column {
+    grid-area: text;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #333;
+    /* Dark gray for readable text contrast */
     text-align: justify;
+}
+
+/* Styling for secondary headers in the text column */
+.text-column h3 {
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: #222;
+    margin-top: 2rem;
+}
+
+/* Paragraph spacing inside the text column */
+.text-column p {
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   Quarto Specific Overrides
+   ========================================================================== */
+/* --- Hide Default Quarto Title blocks internally --- */
+/* Prevents default auto-generated titles from rendering */
+header.quarto-title-block,
+#title-block-header {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Cover Page Elements
+   ========================================================================== */
+/* 5. COVER SECTION (Full Width Image) */
+/* Container for introductory cover page media */
+.cover-container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1800px;
+    /* Expansive layout for high-res screens */
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+}
+
+/* Cover section image properties */
+.cover-container img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* 6. COVER NAVIGATION BUTTON */
+/* 'Enter' button for entering the book/thesis from the cover */
+.enter-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 15px 40px;
+    background-color: #111;
+    /* Dark button styling */
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    /* Smooth hover transition */
+}
+
+/* Hover state for the navigation button */
+.enter-button:hover {
+    background-color: #444;
+    /* Lightens button color on hover */
+    color: #fff;
+}
+
+/* ==========================================================================
+   Desktop Index Layout
+   ========================================================================== */
+.desktop-index-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.index-header-row,
+.index-footer-row,
+.index-map-box {
+    grid-column: 1 / -1;
+}
+
+/* Header Row setup for the title area */
+.index-header-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.index-title h1 {
+    font-size: 3.5em; /* Adjusted to fit layout */
+    text-transform: uppercase;
+    color: #111;
+    margin: 0;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.index-title h1 .header-section-number {
+    font-size: 1em; /* Matches h1 size or relative to it */
+    color: #ccc;
+}
+
+.index-meta {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 1rem;
+    line-height: 1.4;
+}
+
+/* Map area */
+.index-map-box {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* Half of the screen */
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+/* Footer row */
+.index-footer-row {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+.index-footer-left {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.index-footer-right {
+    font-size: 1rem;
+}
+
+.index-footer-right ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.index-footer-right a {
+    text-decoration: none;
+    color: #111;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.15s ease-in-out;
+}
+
+.index-footer-right a:hover {
+    color: #555;
+}
+
+/* Desktop layout overrides */
+@media (min-width: 900px) {
+    .desktop-index-container {
+        grid-template-columns: repeat(12, 1fr);
+        padding: 40px;
+    }
+    
+    .index-header-row {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    
+    .index-title {
+        flex: 1;
+    }
+    
+    .index-meta {
+        margin-top: 0;
+        text-align: right;
+    }
+    
+    .index-map-box {
+        grid-column: 1 / -1; /* Span full layout width */
+    }
+    
+    .index-footer-row {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .index-footer-left {
+        width: 15%; /* About 2 columns */
+    }
+    
+    .index-footer-right {
+        width: 50%; /* About 6 columns */
+        display: flex;
+        justify-content: flex-end;
+    }
 }

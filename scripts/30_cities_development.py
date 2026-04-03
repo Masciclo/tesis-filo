@@ -43,6 +43,11 @@ def load_data_and_plot():
         lambda city: city if city in top5 else 'Otras'
     )
 
+    # Use Turbo color scale for mapping explicit colors
+    turbo_colors = px.colors.sample_colorscale('turbo', [0.1, 0.3, 0.5, 0.7, 0.9])
+    color_map = {city: turbo_colors[i] for i, city in enumerate(top5)}
+    color_map['Otras'] = '#cccccc'
+
     # Crear gráfico
     fig = px.line(
         df,
@@ -50,6 +55,7 @@ def load_data_and_plot():
         y='Population (millions)',
         color='color_group',
         line_group='Urban Agglomeration',
+        color_discrete_map=color_map,
         labels={
             'Year': 'Año',
             'Population (millions)': 'Población (millones)',

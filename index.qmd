@@ -1,163 +1,343 @@
 ---
-title: "The modern inmensity of the urban"
-format: 
+title: "Index"
+format:
   html:
     css: styles.css
-    page-layout: full
+    page-layout: custom
+    title-block-style: none
+resources:
+  - data/cities_development.geojson
 ---
 
-::::: {.thesis-container}
+<!-- ========================================== -->
+<!-- 1. PAGE LAYOUT WRAPPER                     -->
+<!-- ========================================== -->
+::::: {.desktop-index-container}
 
-::: {.sidebar-title}
-# The modern inmensity of the urban
-
-In pre-modern times, we had a relationship with the urban environment that could be addressed, if not manipulated, through locomotion. Wandering was a sufficient mode of transport to experience and intuitively assimilate the urban tissue. The size of the city could be classified, using Freundschuh and Egenhofer’s spaces, as an environmental scale, where the designer could become subject to the different perceptual cues of the city over time
-
-As cities grew larger, their scale began to represent not just a practical complication of transport, but an ontological withdrawal of the urban phenomenon and an epistemological shift toward more abstract ways of conceiving the city. The technological development of transport—cars, trains, and planes— allowed us to transformed the experience of citizens into a discontinuous transit between environments. Although this technological development allowed us to handle and tailor our own individual urban environments within the city, we lost an general aspect of the urban. The passage to a geographic scale meant that we were cognitively surpassed by the urban information (Stolk & Portugali, 2016).
-
-Across the spam of two centuries this change in magnitude widrew the experience of the city from our sensibilities as we knew it. It transformed it into a metropolis, assembled in megalopolis and nested finaly in a ecumenopolis: The phenomena of the urban enviromented enters now partialy in our lifes, closer to climate and other worldly events, it has become psicolgicably increasingly inaccesible in its totality by pure sensible intuition, and the design medium trougth wich we concive them have turn virtual domains. 
-What was lost during transformation? How do we did built the modern city if not trougth intuition? Who were technological "winners" and the "loser" of this revolution? Why intuition cannot be convey througt modern design medium?? How could we trace a genalogy of intuitive design mediums?
+<!-- ========================================== -->
+<!-- 2. HEADER SECTION                          -->
+<!-- Contains the main title and issue metadata -->
+<!-- ========================================== -->
+::: {.index-header-row}
+::: {.index-title}
+<h1><span class="header-section-number">/00</span> The epoch of the immen-city </h1>
+:::
+::: {.index-meta}
+<p>Issue No. 0<br>July 2025</p>
+:::
 :::
 
-:::: {.main-content}
-
-<br><br><br><br><br>
-
-***
-
-*figura 1. BULP Ubicaciones de propiedades edificadas [^1]*
-
-::: {.video-container}
+<!-- ========================================== -->
+<!-- 3. INTERACTIVE MAP SECTION                 -->
+<!-- Builds the Mapbox globe and interactions   -->
+<!-- ========================================== -->
+::: {.index-map-box}
 ```{=html}
-<video width="100%" autoplay loop muted playsinline controls>
-  <source src="figures/BUPL.mp4" type="video/mp4">
-</video>
+<!-- 3.1 HTML Setup: Mapbox Dependencies -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.css" rel="stylesheet" />
+
+<!-- 3.2 Component Styling (Map, Slider, Legend) -->
+<style>
+  #map-container { position: relative; width: 100%; height: 100%; min-height: 450px; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  .slider-panel {
+    position: absolute; bottom: 30px; left: 30px; z-index: 1;
+    background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: sans-serif;
+  }
+  .mapboxgl-popup-content { font-family: sans-serif; font-size: 14px; }
+  
+  .map-overlay {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: Arial, sans-serif;
+    overflow: auto;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    line-height: 24px;
+    z-index: 1;
+    max-height: 200px;
+  }
+  .legend-key {
+    display: inline-block;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+  }
+</style>
+
+<!-- 3.3 HTML Structure (UI Elements) -->
+<div id="map-container">
+  <div id="map"></div>
+  <div class="slider-panel">
+    <h2>Year: <span id="active-year">1975</span></h2>
+    <input id="slider" type="range" min="1975" max="2035" step="5" value="1975" style="width: 200px;">
+  </div>
+  <div class="map-overlay" id="legend"></div>
+</div>
+
+<!-- 3.4 JavaScript: Mapbox Initialization and Data Engine -->
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoibWFzY2ljbG8iLCJhIjoiY21uMDFlb2QyMGRlYTJwczJ1NXh0NGNwbCJ9.10bjc3pP6ZC8TAXtORUVMw'; 
+
+  const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v11',
+      center: [0, 20],
+      zoom: 1.5,
+      projection: 'globe'
+  });
+
+  map.on('load', () => {
+
+      map.addSource('cities', {
+          type: 'geojson',
+          data: 'data/cities_development.geojson?t=' + new Date().getTime()
+      });
+
+      // --- 3.4.1 Add Proportional Circles Layer ---
+      map.addLayer({
+          'id': 'cities-circles',
+          'type': 'circle',
+          'source': 'cities',
+          'paint': {
+              'circle-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'pop_1975'],
+                  0, '#fcfdbf',
+                  5, '#feca8d',
+                  10, '#fd9668',
+                  15, '#f1605d',
+                  20, '#cd4071',
+                  25, '#9e2f7f',
+                  30, '#721f81',
+                  35, '#440f76',
+                  40, '#180f3d',
+                  45, '#000004'
+              ],
+              'circle-opacity': 0.8,
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#ffffff',
+              'circle-radius': ['*', ['get', 'pop_1975'], 1.2]
+          }
+      });
+
+      // --- 3.4.2 Build and Attach the Map Legend ---
+      const legendLayers = ['0M', '5M', '10M', '15M', '20M', '25M', '30M', '35M', '40M', '45M'];
+      const legendColors = ['#fcfdbf', '#feca8d', '#fd9668', '#f1605d', '#cd4071', '#9e2f7f', '#721f81', '#440f76', '#180f3d', '#000004'];
+      
+      const legend = document.getElementById('legend');
+      const legendTitle = document.createElement('strong');
+      legendTitle.innerHTML = 'Population<br>';
+      legend.appendChild(legendTitle);
+
+      legendLayers.forEach((layer, i) => {
+          const color = legendColors[i];
+          const item = document.createElement('div');
+          const key = document.createElement('span');
+          key.className = 'legend-key';
+          key.style.backgroundColor = color;
+      
+          const value = document.createElement('span');
+          value.innerHTML = layer;
+          item.appendChild(key);
+          item.appendChild(value);
+          legend.appendChild(item);
+      });
+
+      // --- 3.4.3 Year Slider Update Function ---
+      // Dynamically styles circle radius and color based on the selected year
+      function setYear(year) {
+          document.getElementById('active-year').innerText = year;
+          map.setPaintProperty('cities-circles', 'circle-radius', ['*', ['get', 'pop_' + year], 1.2]);
+          map.setPaintProperty('cities-circles', 'circle-color', [
+              'interpolate',
+              ['linear'],
+              ['get', 'pop_' + year],
+              0, '#fcfdbf',
+              5, '#feca8d',
+              10, '#fd9668',
+              15, '#f1605d',
+              20, '#cd4071',
+              25, '#9e2f7f',
+              30, '#721f81',
+              35, '#440f76',
+              40, '#180f3d',
+              45, '#000004'
+          ]);
+      }
+
+      setYear(1975);
+
+      document.getElementById('slider').addEventListener('input', (e) => {
+          setYear(e.target.value);
+      });
+
+      // --- 3.4.4 Map Interactivity: Tooltips on Hover ---
+      const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+      });
+
+      map.on('mousemove', 'cities-circles', (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const popKey = 'pop_' + document.getElementById('slider').value;
+          const pop = e.features[0].properties[popKey];
+          const name = e.features[0].properties.name;
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          popup.setLngLat(coordinates)
+              .setHTML(`<strong>${name}</strong><br>Population: ${pop} Million`)
+              .addTo(map);
+      });
+
+      map.on('mouseleave', 'cities-circles', () => {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+      });
+
+      // --- Auto Tour Animation Logic ---
+      let isAnimating = true;
+      let animationRef;
+
+      function stopAnimation() {
+          if (isAnimating) {
+              isAnimating = false;
+              cancelAnimationFrame(animationRef);
+              map.stop(); // Stop any pending flyTo or panning
+          }
+      }
+
+      // Listen for interruptions
+      map.on('mousedown', stopAnimation);
+      map.on('touchstart', stopAnimation);
+      map.on('wheel', stopAnimation);
+      map.on('dragstart', stopAnimation);
+      document.getElementById('slider').addEventListener('mousedown', stopAnimation);
+      document.getElementById('slider').addEventListener('touchstart', stopAnimation);
+
+      function animateSlider(startTime, startVal, endVal, duration) {
+          return new Promise(resolve => {
+              function step(timestamp) {
+                  if (!isAnimating) return resolve();
+                  
+                  const progress = Math.min((timestamp - startTime) / duration, 1);
+                  // Snap to nearest 5 years
+                  const current = Math.round((startVal + progress * (endVal - startVal)) / 5) * 5;
+                  
+                  // Update slider and map if changed
+                  if (document.getElementById('slider').value != current) {
+                      document.getElementById('slider').value = current;
+                      setYear(current);
+                  }
+                  
+                  if (progress < 1) {
+                      animationRef = requestAnimationFrame(step);
+                  } else {
+                      resolve();
+                  }
+              }
+              animationRef = requestAnimationFrame(step);
+          });
+      }
+
+      async function startTour() {
+          try {
+              const response = await fetch('data/cities_development.geojson');
+              const data = await response.json();
+              if(!data || !data.features || data.features.length === 0) return;
+
+              // Shuffle cities
+              const features = data.features.sort(() => 0.5 - Math.random());
+              let cityIndex = 0;
+              let goingUp = true; // Slider direction
+
+              // Initial delay before starting
+              await new Promise(r => setTimeout(r, 1500));
+
+              async function tourNextCity() {
+                  if (!isAnimating) return;
+                  
+                  if (cityIndex >= features.length) {
+                      // Repeat loop
+                      cityIndex = 0;
+                      features.sort(() => 0.5 - Math.random()); 
+                  }
+                  
+                  const city = features[cityIndex];
+                  const coords = city.geometry.coordinates;
+                  const duration = 4000;
+
+                  // Move camera
+                  map.flyTo({
+                      center: coords,
+                      zoom: 4.5,
+                      duration: duration,
+                      essential: true
+                  });
+
+                  const startVal = goingUp ? 1975 : 2035;
+                  const endVal = goingUp ? 2035 : 1975;
+                  
+                  // Sync slider
+                  await animateSlider(performance.now(), startVal, endVal, duration);
+                  
+                  goingUp = !goingUp;
+                  cityIndex++;
+                  
+                  if (isAnimating) {
+                     // Minor pause between flights
+                     await new Promise(r => setTimeout(r, 500));
+                     tourNextCity();
+                  }
+              }
+              
+              tourNextCity();
+
+          } catch (e) {
+              console.error("Failed to load cities for tour:", e);
+          }
+      }
+
+      // Start the sequence
+      startTour();
+
+  });
+</script>
 ```
 :::
 
-*figure 2. Variación de ubicaciones de propiedades edificadas[^2]*
-
-::: {.video-container}
-```{=html}
-<video width="700" autoplay loop muted playsinline controls>
-  <source src="figures/BUPL_VARIATION.mp4" type="video/mp4">
-</video>
-```
-
-```{python}
-#| echo: false
-#| fig-cap: "Evolución de la población por ciudad (Top 5 destacadas)"
-
-import pandas as pd
-import plotly.express as px
-
-# 1) Lee el CSV
-df = pd.read_csv(
-    "data/WUP2018-F11b-30_Largest_Cities_in_2018_by_time_delimitado.csv",
-    sep=";", engine="python", decimal=","
-)
-
-# 2) Filtra y calcula tasas de crecimiento
-years_20 = [1950, 1970, 1990, 2010, 2030]
-pivot = (
-    df[df['Year'].isin(years_20)]
-    .pivot_table(index='Urban Agglomeration', columns='Year',
-                 values='Population (millions)')
-    .reset_index()
-)
-pivot['1950-1970'] = (pivot[1970] - pivot[1950]) / pivot[1950]
-pivot['1970-1990'] = (pivot[1990] - pivot[1970]) / pivot[1970]
-pivot['1990-2010'] = (pivot[2010] - pivot[1990]) / pivot[1990]
-pivot['2010-2030'] = (pivot[2030] - pivot[2010]) / pivot[2010]
-
-growth = pivot.assign(**{
-    'Mean Growth Rate': pivot[['1950-1970','1970-1990','1990-2010','2010-2030']].mean(axis=1)
-}).sort_values('Mean Growth Rate', ascending=False)
-
-# 3) Top 5 y resto como 'Otras'
-top5 = growth['Urban Agglomeration'].head(5).tolist()
-df['color_group'] = df['Urban Agglomeration'].apply(
-    lambda c: c if c in top5 else 'Otras'
-)
-
-# 4) Crear figura inyectando Urban Agglomeration en custom_data
-fig = px.line(
-    df,
-    x='Year',
-    y='Population (millions)',
-    color='color_group',
-    line_group='Urban Agglomeration',
-    custom_data=['Urban Agglomeration'],
-    hover_data={                      # ocultamos todo lo automático
-        'color_group': False,
-        'Year': False,
-        'Population (millions)': False,
-        'Urban Agglomeration': False
-    },
-    labels={
-        'Year': 'Año',
-        'Population (millions)': 'Población (millones)'
-    },
-)
-
-# 5) Tooltip personalizado usando customdata[0]
-fig.update_traces(
-    hovertemplate=
-        "Ciudad : %{customdata[0]}<br>" +
-        "Año : %{x}<br>" +
-        "Población (millones) : %{y:.0f}<br>" +
-        "<extra></extra>"
-)
-
-# 6) Estilos de fondo blanco
-fig.update_layout(
-    paper_bgcolor="white",
-    plot_bgcolor="white"
-)
-
-# 7) Líneas ‘Otras’ en gris claro y top5 más gruesas
-for trace in fig.data:
-    if trace.name == "Otras":
-        trace.update(line=dict(color="lightgrey", width=1))
-    else:
-        trace.update(line=dict(width=2))
-
-# 8) Mostrar figura
-fig
-```
-![](figures/global_building_atlas_heigth_maps.jpg){#fig-global-atlas fig-cap="Overview of the GlobalBuildingAtlas dataset, consisting of global building polygons, height maps, and LoD1 models.[^1]"}
-![](figures/global_building_atlas_heigth_maps.jpg){#fig-gba-overview fig-cap="Overview of the resulting GlobalBuildingAtlas dataset, consisting of global building polygons, building height map, and LoD1 models. Base images © Google Maps.[^1]"}
-
+<!-- ========================================== -->
+<!-- 4. FOOTER SECTION                          -->
+<!-- Navigation links and author information    -->
+<!-- ========================================== -->
+::: {.index-footer-row}
+::: {.index-footer-left}
+<p>Author<br>Jaime Vergara Sanfuentes</p>
 :::
-
-::::
+::: {.index-footer-right}
+<ul>
+  <li><a href="index.html">Index</a></li>
+  <li><a href="chap_1.html">Chapter 1</a></li>
+  <li><a href="chap_2.html">Chapter 2</a></li>
+  <li><a href="chap_3.html">Chapter 3</a></li>
+  <li><a href="chap_4.html">Chapter 4</a></li>
+  <li><a href="chap_5.html">Chapter 5</a></li>
+  <li><a href="chap_6.html">Chapter 6</a></li>
+  
+  <li><a href="references.html">References</a></li>
+</ul>
+:::
+:::
 
 :::::
-
-:::: {.four-column-container}
-
-::: {.grid-item}
-**Column 1 Header**
-Insert the text or images for your first column here.
-:::
-
-::: {.grid-item}
-**Column 2 Header**
-Insert the text or images for your second column here.
-:::
-
-::: {.grid-item}
-**Column 3 Header**
-Insert the text or images for your third column here.
-:::
-
-::: {.grid-item}
-**Column 4 Header**
-Insert the text or images for your fourth column here.
-:::
-
-::::
-
-
-[^1]: Uhl, Johannes H.: Animating 200 years of urban spatial development in 35 U.S. cities. Copernicus Publications, 2020. https://doi.org/10.5446/48115
-[^2]: Idem.

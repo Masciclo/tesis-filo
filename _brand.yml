@@ -1,0 +1,18 @@
+meta:
+  name: "Editorial Tesis"
+typography:
+  fonts:
+    - family: "Helvetica Neue"
+      source: google 
+      # Note: 'Helvetica Neue' is typically a system font. 
+      # Using 'Inter' or 'Roboto' as a fallback from google is common.
+    - family: "Inter"
+      source: google
+  base: "Helvetica Neue, Inter, Helvetica, Arial, sans-serif"
+  headings:
+    family: "Helvetica Neue, Inter, Helvetica, Arial, sans-serif"
+    weight: 800
+
+color:
+  foreground: "#333333"
+  background: "#ffffff"

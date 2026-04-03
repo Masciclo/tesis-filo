@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jaime Vergara Sanfuentes">
+<meta name="dcterms.date" content="2025-03-05">
+
+<title>tesis-filo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-6c63763c1ae9bd01aad4ba4dab843f5b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-3eca395e814a14fe134efd8518f5a19a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header">
+<h1 class="title display-7">tesis-filo</h1>
+<p class="author">Jaime Vergara Sanfuentes</p>
+
+<p class="date">2025-03-05</p>
+</header>
+
+
+<!-- ========================================== -->
+<!-- 1. PAGE LAYOUT WRAPPER                     -->
+<!-- ========================================== -->
+<div class="desktop-index-container">
+<!-- ========================================== -->
+<!-- 2. HEADER SECTION                          -->
+<!-- Contains the main title and issue metadata -->
+<!-- ========================================== -->
+<div class="index-header-row">
+<div class="index-title">
+<h1>
+<span class="header-section-number">/00</span> The epoch of the immen-city
+</h1>
+</div>
+<div class="index-meta">
+<p>
+Issue No.&nbsp;0<br>July 2025
+</p>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 3. INTERACTIVE MAP SECTION                 -->
+<!-- Builds the Mapbox globe and interactions   -->
+<!-- ========================================== -->
+<div class="index-map-box">
+<!-- 3.1 HTML Setup: Mapbox Dependencies -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.css" rel="stylesheet">
+
+<!-- 3.2 Component Styling (Map, Slider, Legend) -->
+<style>
+  #map-container { position: relative; width: 100%; height: 100%; min-height: 450px; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  .slider-panel {
+    position: absolute; bottom: 30px; left: 30px; z-index: 1;
+    background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: sans-serif;
+  }
+  .mapboxgl-popup-content { font-family: sans-serif; font-size: 14px; }
+  
+  .map-overlay {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: Arial, sans-serif;
+    overflow: auto;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    line-height: 24px;
+    z-index: 1;
+    max-height: 200px;
+  }
+  .legend-key {
+    display: inline-block;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+  }
+</style>
+
+<!-- 3.3 HTML Structure (UI Elements) -->
+<div id="map-container">
+  <div id="map"></div>
+  <div class="slider-panel">
+    <h2>Year: <span id="active-year">1975</span></h2>
+    <input id="slider" type="range" min="1975" max="2035" step="5" value="1975" style="width: 200px;">
+  </div>
+  <div class="map-overlay" id="legend"></div>
+</div>
+
+<!-- 3.4 JavaScript: Mapbox Initialization and Data Engine -->
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoibWFzY2ljbG8iLCJhIjoiY21uMDFlb2QyMGRlYTJwczJ1NXh0NGNwbCJ9.10bjc3pP6ZC8TAXtORUVMw'; 
+
+  const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v11',
+      center: [0, 20],
+      zoom: 1.5,
+      projection: 'globe'
+  });
+
+  map.on('load', () => {
+
+      map.addSource('cities', {
+          type: 'geojson',
+          data: 'data/cities_development.geojson?t=' + new Date().getTime()
+      });
+
+      // --- 3.4.1 Add Proportional Circles Layer ---
+      map.addLayer({
+          'id': 'cities-circles',
+          'type': 'circle',
+          'source': 'cities',
+          'paint': {
+              'circle-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'pop_1975'],
+                  0, '#fcfdbf',
+                  5, '#feca8d',
+                  10, '#fd9668',
+                  15, '#f1605d',
+                  20, '#cd4071',
+                  25, '#9e2f7f',
+                  30, '#721f81',
+                  35, '#440f76',
+                  40, '#180f3d',
+                  45, '#000004'
+              ],
+              'circle-opacity': 0.8,
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#ffffff',
+              'circle-radius': ['*', ['get', 'pop_1975'], 1.2]
+          }
+      });
+
+      // --- 3.4.2 Build and Attach the Map Legend ---
+      const legendLayers = ['0M', '5M', '10M', '15M', '20M', '25M', '30M', '35M', '40M', '45M'];
+      const legendColors = ['#fcfdbf', '#feca8d', '#fd9668', '#f1605d', '#cd4071', '#9e2f7f', '#721f81', '#440f76', '#180f3d', '#000004'];
+      
+      const legend = document.getElementById('legend');
+      const legendTitle = document.createElement('strong');
+      legendTitle.innerHTML = 'Population<br>';
+      legend.appendChild(legendTitle);
+
+      legendLayers.forEach((layer, i) => {
+          const color = legendColors[i];
+          const item = document.createElement('div');
+          const key = document.createElement('span');
+          key.className = 'legend-key';
+          key.style.backgroundColor = color;
+      
+          const value = document.createElement('span');
+          value.innerHTML = layer;
+          item.appendChild(key);
+          item.appendChild(value);
+          legend.appendChild(item);
+      });
+
+      // --- 3.4.3 Year Slider Update Function ---
+      // Dynamically styles circle radius and color based on the selected year
+      function setYear(year) {
+          document.getElementById('active-year').innerText = year;
+          map.setPaintProperty('cities-circles', 'circle-radius', ['*', ['get', 'pop_' + year], 1.2]);
+          map.setPaintProperty('cities-circles', 'circle-color', [
+              'interpolate',
+              ['linear'],
+              ['get', 'pop_' + year],
+              0, '#fcfdbf',
+              5, '#feca8d',
+              10, '#fd9668',
+              15, '#f1605d',
+              20, '#cd4071',
+              25, '#9e2f7f',
+              30, '#721f81',
+              35, '#440f76',
+              40, '#180f3d',
+              45, '#000004'
+          ]);
+      }
+
+      setYear(1975);
+
+      document.getElementById('slider').addEventListener('input', (e) => {
+          setYear(e.target.value);
+      });
+
+      // --- 3.4.4 Map Interactivity: Tooltips on Hover ---
+      const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+      });
+
+      map.on('mousemove', 'cities-circles', (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const popKey = 'pop_' + document.getElementById('slider').value;
+          const pop = e.features[0].properties[popKey];
+          const name = e.features[0].properties.name;
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          popup.setLngLat(coordinates)
+              .setHTML(`<strong>${name}</strong><br>Population: ${pop} Million`)
+              .addTo(map);
+      });
+
+      map.on('mouseleave', 'cities-circles', () => {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+      });
+
+      // --- Auto Tour Animation Logic ---
+      let isAnimating = true;
+      let animationRef;
+
+      function stopAnimation() {
+          if (isAnimating) {
+              isAnimating = false;
+              cancelAnimationFrame(animationRef);
+              map.stop(); // Stop any pending flyTo or panning
+          }
+      }
+
+      // Listen for interruptions
+      map.on('mousedown', stopAnimation);
+      map.on('touchstart', stopAnimation);
+      map.on('wheel', stopAnimation);
+      map.on('dragstart', stopAnimation);
+      document.getElementById('slider').addEventListener('mousedown', stopAnimation);
+      document.getElementById('slider').addEventListener('touchstart', stopAnimation);
+
+      function animateSlider(startTime, startVal, endVal, duration) {
+          return new Promise(resolve => {
+              function step(timestamp) {
+                  if (!isAnimating) return resolve();
+                  
+                  const progress = Math.min((timestamp - startTime) / duration, 1);
+                  // Snap to nearest 5 years
+                  const current = Math.round((startVal + progress * (endVal - startVal)) / 5) * 5;
+                  
+                  // Update slider and map if changed
+                  if (document.getElementById('slider').value != current) {
+                      document.getElementById('slider').value = current;
+                      setYear(current);
+                  }
+                  
+                  if (progress < 1) {
+                      animationRef = requestAnimationFrame(step);
+                  } else {
+                      resolve();
+                  }
+              }
+              animationRef = requestAnimationFrame(step);
+          });
+      }
+
+      async function startTour() {
+          try {
+              const response = await fetch('data/cities_development.geojson');
+              const data = await response.json();
+              if(!data || !data.features || data.features.length === 0) return;
+
+              // Shuffle cities
+              const features = data.features.sort(() => 0.5 - Math.random());
+              let cityIndex = 0;
+              let goingUp = true; // Slider direction
+
+              // Initial delay before starting
+              await new Promise(r => setTimeout(r, 1500));
+
+              async function tourNextCity() {
+                  if (!isAnimating) return;
+                  
+                  if (cityIndex >= features.length) {
+                      // Repeat loop
+                      cityIndex = 0;
+                      features.sort(() => 0.5 - Math.random()); 
+                  }
+                  
+                  const city = features[cityIndex];
+                  const coords = city.geometry.coordinates;
+                  const duration = 4000;
+
+                  // Move camera
+                  map.flyTo({
+                      center: coords,
+                      zoom: 4.5,
+                      duration: duration,
+                      essential: true
+                  });
+
+                  const startVal = goingUp ? 1975 : 2035;
+                  const endVal = goingUp ? 2035 : 1975;
+                  
+                  // Sync slider
+                  await animateSlider(performance.now(), startVal, endVal, duration);
+                  
+                  goingUp = !goingUp;
+                  cityIndex++;
+                  
+                  if (isAnimating) {
+                     // Minor pause between flights
+                     await new Promise(r => setTimeout(r, 500));
+                     tourNextCity();
+                  }
+              }
+              
+              tourNextCity();
+
+          } catch (e) {
+              console.error("Failed to load cities for tour:", e);
+          }
+      }
+
+      // Start the sequence
+      startTour();
+
+  });
+</script>
+</div>
+<!-- ========================================== -->
+<!-- 4. FOOTER SECTION                          -->
+<!-- Navigation links and author information    -->
+<!-- ========================================== -->
+<div class="index-footer-row">
+<div class="index-footer-left">
+<p>
+Author<br>Jaime Vergara Sanfuentes
+</p>
+</div>
+<div class="index-footer-right">
+<ul>
+<li>
+<a href="index.html">Index</a>
+</li>
+<li>
+<a href="chap_1.html">Chapter 1</a>
+</li>
+<li>
+<a href="chap_2.html">Chapter 2</a>
+</li>
+<li>
+<a href="chap_3.html">Chapter 3</a>
+</li>
+<li>
+<a href="chap_4.html">Chapter 4</a>
+</li>
+<li>
+<a href="chap_5.html">Chapter 5</a>
+</li>
+<li>
+<a href="chap_6.html">Chapter 6</a>
+</li>
+<li>
+<a href="references.html">References</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
